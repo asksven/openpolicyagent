@@ -35,7 +35,7 @@ openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out s
 Create a Secret to store the TLS credentials:
 
 ```
-kubectl create secret tls opa-server --cert=server.crt --key=server.key
+kubectl -n opa create secret tls opa-server --cert=server.crt --key=server.key
 ```
 
 Create the adminission controller:
