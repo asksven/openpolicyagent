@@ -1,8 +1,8 @@
 # Install open policy agent
 
-Instructions: https://www.openpolicyagent.org/docs/kubernetes-admission-control.html
+Instructions: https://www.openpolicyagent.org/docs/latest/kubernetes-admission-control#1-start-kubernetes-recommended-admisson-controllers-enabled
 
-Create namespace: `kubectl create namespace opa`
+Create namespace: `kubectl create ns opa`
 
 Create CA and certificate/key pair for opa:
 
@@ -46,11 +46,26 @@ kubectl apply -f admission-controller.yaml
 
 Finally registry the adminission controller:
 
+1. Replace `$(cat ca.crt | base64 | tr -d '\n')` by the result of `cat ca.crt | base64 | tr -d '\n'` in `webhook-configuration.yaml`
+
+2. Create the webhook
 ```
 kubectl apply -f webhook-configuration.yaml
 ```
 
+**Note:** the webhook from the doc was modified to get triggered on `DELETE` as well, since we want to provide namespace deletion on `example2`
+
+3. Make sure to exclude `kube-system` and `opa`:
+
+```
+kubectl label ns kube-system openpolicyagent.org/webhook=ignore
+kubectl label ns opa openpolicyagent.org/webhook=ignore
+```
+
 ## Test
+
+Check the logs: `kubectl logs -l app=opa -c opa`
+
 
 For building an own policy see `example1/README.md`
 
