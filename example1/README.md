@@ -14,7 +14,7 @@ kubectl create -f ingress-ok.yaml -n production
 kubectl create -f ingress-bad.yaml -n qa
 ```
 
-The creation of `ingress-bad.yaml` sould fail with:
+The creation of `ingress-bad.yaml` should fail with:
 
 ```
 Error from server (invalid ingress host "acmecorp.com"): error when creating "ingress-bad.yaml": admission webhook "validating-webhook.openpolicyagent.org" denied the request: invalid ingress host "acmecorp.com"

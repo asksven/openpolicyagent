@@ -44,27 +44,52 @@ Create the adminission controller:
 kubectl apply -f admission-controller.yaml
 ```
 
-Finally registry the adminission controller:
+Finally register the adminission controller:
 
-1. Replace `$(cat ca.crt | base64 | tr -d '\n')` by the result of `cat ca.crt | base64 | tr -d '\n'` in `webhook-configuration.yaml`
 
-2. Create the webhook
+Create the webhook configuration:
+
 ```
-kubectl apply -f webhook-configuration.yaml
+cat > webhook-configuration.yaml <<EOF
+kind: ValidatingWebhookConfiguration
+apiVersion: admissionregistration.k8s.io/v1beta1
+metadata:
+  name: opa-validating-webhook
+webhooks:
+  - name: validating-webhook.openpolicyagent.org
+    namespaceSelector:
+      matchExpressions:
+      - key: openpolicyagent.org/webhook
+        operator: NotIn
+        values:
+        - ignore
+    rules:
+      - operations: ["CREATE", "UPDATE"]
+        apiGroups: ["*"]
+        apiVersions: ["*"]
+        resources: ["*"]
+    clientConfig:
+      caBundle: $(cat ca.crt | base64 | tr -d '\n')
+      service:
+        namespace: opa
+        name: opa
+EOF
 ```
 
 **Note:** the webhook from the doc was modified to get triggered on `DELETE` as well, since we want to provide namespace deletion on `example2`
 
-3. Make sure to exclude `kube-system` and `opa`:
+Make sure to exclude `kube-system` and `opa`:
 
 ```
 kubectl label ns kube-system openpolicyagent.org/webhook=ignore
 kubectl label ns opa openpolicyagent.org/webhook=ignore
 ```
 
+kubectl apply -f webhook-configuration.yaml
+
 ## Test
 
-Check the logs: `kubectl logs -l app=opa -c opa`
+Check the logs: `kubectl -n opa logs -l app=opa -c opa`
 
 
 For building an own policy see `example1/README.md`
