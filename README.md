@@ -1,3 +1,19 @@
+# Install gatekeeper
+
+Gatekeeper is the replacement for open policy agent for kubernetes.
+
+See here for more: https://github.com/open-policy-agent/gatekeeper
+
+
+Current version: https://raw.githubusercontent.com/open-policy-agent/gatekeeper/master/deploy/gatekeeper.yaml
+
+Install: `kubectl apply -f gatekeeper.yaml`
+
+# Uninstall gatekeeper
+
+See https://github.com/open-policy-agent/gatekeeper#uninstallation
+
+
 # Install open policy agent
 
 Instructions: https://www.openpolicyagent.org/docs/latest/kubernetes-admission-control#1-start-kubernetes-recommended-admisson-controllers-enabled
