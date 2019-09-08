@@ -1,6 +1,6 @@
 # Testing opa
 
-`ingress-conflicts.rego` contains the example from §4 of  https://www.openpolicyagent.org/docs/kubernetes-admission-control.html
+`ingress-whitelist.rego` contains the example from §4 of  https://www.openpolicyagent.org/docs/kubernetes-admission-control.html
 
 1. Create a configmap: `kubectl -n opa create configmap ingress-whitelist --from-file=ingress-whitelist.rego`
 2. Create the two namespaces: 

@@ -44,9 +44,6 @@ Create the adminission controller:
 kubectl apply -f admission-controller.yaml
 ```
 
-Finally register the adminission controller:
-
-
 Create the webhook configuration:
 
 ```
@@ -64,7 +61,7 @@ webhooks:
         values:
         - ignore
     rules:
-      - operations: ["CREATE", "UPDATE"]
+      - operations: ["CREATE", "UPDATE", "DELETE"]
         apiGroups: ["*"]
         apiVersions: ["*"]
         resources: ["*"]
